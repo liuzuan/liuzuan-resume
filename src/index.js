@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import './px2rem';
-import './style.less';
+import App from './App.jsx';
+import './tool';
+import './style/reset.less';
 import registerServiceWorker from './registerServiceWorker';
 import { AppContainer } from 'react-hot-loader';
 
