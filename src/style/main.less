@@ -4,23 +4,23 @@
   left: 0;
   z-index: 999;
   width: 100%;
-  height: 70px;
+  height: auto;
   background: #2c3e50;
   overflow: hidden;
   .content {
     width: 90%;
     margin: 0 auto;
     color: #fff;
+    height: 70px;
     line-height: 70px;
     font-size: 16px;
     display: flex;
     justify-content: space-between;
-    .left {}
     .right {
       a {
         color: #fff;
         display: inline-block;
-        width: 100px;
+        width: 90px;
         height: 70px;
         text-align: center;
         &:hover {
@@ -36,14 +36,11 @@
     }
   }
   .dropdown {
-    position: fixed;
-    top: 70px;
-    left: 0;
     z-index: 999;
     display: none;
     width: 100%;
-    height: 100px;
-    padding: 20px 5%;
+    height: 0px;
+    transition: height .2s;
     background: #2c3e50;
     a {
       display: inline-block;
@@ -94,7 +91,7 @@
     line-height: 100vh;
     overflow: hidden;
   }
-  .hellow {
+  .info {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -116,7 +113,7 @@
     .button {
       width: 415px;
       margin: 20px auto;
-      span {
+      a {
         display: inline-block;
         width: 200px;
         height: 50px;
@@ -127,69 +124,101 @@
         border-radius: 5px;
         text-align: center;
         font-size: 16px;
+        transition: all .3s;
         &:nth-child(2) {
           color: #000;
           margin-left: 15px;
           border: 1px solid #000;
           background: rgba(256, 256, 256, .8);
         }
+        &:nth-child(1):hover {
+          color: #000;
+          border: 1px solid #000;
+          background: rgba(255, 255, 255, .8);
+        }
+        &:nth-child(2):hover {
+          color: #fff;
+          border: 1px solid #fff;
+          background: rgba(0, 0, 0, .8);
+        }
       }
     }
   }
 }
 
-#section2 {
-  position: relative;
-  text-align: center;
+.panel {
+  display: flex;
+  align-items: center;
   width: 100%;
   height: 100vh;
   .main {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     width: 100%;
     h1 {
+      position: relative;
       font-size: 30px;
       font-weight: 600;
-      padding: 0;
-    }
-    .avatar {
-      position: relative;
-      width: 160px;
-      height: 180px;
-      border-radius: 50%;
-      margin: 30px auto;
-      overflow: hidden;
-      img {
+      color: #000;
+      text-align: center;
+      text-shadow: 1px 1px 1px #fff;
+      &:after {
+        content: '';
         position: absolute;
-        top: 50%;
+        bottom: -5px;
         left: 50%;
-        transform: translate(-47%, -50%);
+        transform: translateX(-50%);
         display: block;
-        width: 180px;
-        height: 230px;
+        height: 3px;
+        width: 0px;
+        background: orange;
+        transition: width .2s;
       }
     }
-    p {
-      max-width: 794px;
-      margin: 0 auto;
-      text-align: left;
-      text-indent: 25px;
-      letter-spacing: 2px;
-      font-size: 16px;
-      padding: 10px 20px 10px;
-      line-height: 1.5;
-    }
+  }
+  &:hover .main h1:after {
+    width: 120px;
   }
 }
 
 .backgroundPanel {
-  width: 100%;
-  height: 100vh;
-  background-size: cover;
+  background-position: 50% 0;
   background-attachment: fixed;
-  background-position: center 0;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+#section2 {
+  position: relative;
+  h1 {
+    font-size: 30px;
+    font-weight: 600;
+    padding: 0;
+  }
+  .avatar {
+    position: relative;
+    width: 160px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 30px auto;
+    overflow: hidden;
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-47%, -50%);
+      display: block;
+      width: 180px;
+      height: 230px;
+    }
+  }
+  p {
+    max-width: 794px;
+    margin: 0 auto;
+    text-indent: 25px;
+    letter-spacing: 2px;
+    font-size: 16px;
+    padding: 10px 20px 10px;
+    line-height: 1.5;
+  }
 }
 
 #section3 {
@@ -197,20 +226,19 @@
 }
 
 #section4 {
-  width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   .container {
     width: 70%;
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 30px;
     display: flex;
-    justify-content: space-around;
     flex-wrap: wrap;
     .artBox {
       position: relative;
-      width: 6rem;
-      height: 6rem;
-      margin: .5rem;
+      width: 33.33%;
+      height: 33.33%;
+      padding: 10px;
+      transition: all .2s;
       img {
         width: 100%;
         height: 100%;
@@ -219,27 +247,41 @@
         position: absolute;
         top: 0;
         left: 0;
-        display: none;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, .5);
+        padding: 10px;
+        opacity: 0;
         color: #fff;
-        .title {
-          font-size: 20px;
-          padding-top: 30px;
-          text-align: center;
-          letter-spacing: 2px;
-        }
-        .text {
-          font-size: 14px;
-          line-height: 1.5;
-          letter-spacing: 2px;
-          padding: 20px 1rem;
-
+        transition: all .2s;
+        .coverContent {
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, .5);
+          display: flex;
+          align-items: center;
+          section {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            .title {
+              font-size: 20px;
+              letter-spacing: 2px;
+              padding: 10px;
+            }
+            .text {
+              font-size: 14px;
+              line-height: 1.5;
+              letter-spacing: 2px;
+            }
+          }
         }
       }
       &:hover .coverBox {
-        display: block;
+        padding: 0;
+        opacity: 1;
+      }
+      &:hover {
+        padding: 0;
       }
     }
   }
@@ -249,27 +291,22 @@
   background-image: url('../assets/images/04.jpg');
 }
 
-#section6 {
-  width: 100%;
-  height: 100vh;
-}
-
 #section7 {
   background-image: url('../assets/images/02.jpg');
 }
 
-@media screen and (max-width: 414px) {
+@media screen and(max-width: 768px) {
   #section1 {
-    .hellow {
+    .info {
       p {
-        font-size: 16px;
+        font-size: 20px;
         &:nth-child(1) {
-          font-size: 28px;
+          font-size: 36px;
         }
       }
       .button {
         width: 200px;
-        span {
+        a {
           display: block;
           height: 35px;
           line-height: 35px;
@@ -281,24 +318,6 @@
       }
     }
   }
-  #section4 {
-    .container {
-      width: 90%;
-      .artBox {
-        width: 12rem;
-        height: 12rem;
-        .coverBox {
-          display: block;
-          .text {
-            padding: 1rem;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 800px) {
   .nav {
     .content {
       .right {
@@ -310,6 +329,71 @@
     }
     .dropdown {
       display: block;
+    }
+  }
+  #section4 {
+    .container {
+      width: 100%;
+      padding: 0 15px;
+      .artBox {
+        width: 50%;
+        height: 50%;
+        padding: 10px;
+        .coverBox {
+          box-sizing: border-box;
+          font-size: 16px;
+          opacity: 1;
+          .coverContent {
+            section {
+              width: 100%;
+              padding: 10px;
+              .title {
+                font-size: 16px;
+              }
+              .text {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+        &:hover .coverBox {
+          padding: 10px;
+          opacity: 1;
+        }
+        &:hover {
+          padding: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 414px) {
+  .backgroundPanel {
+    background-position: 50% 0;
+    background-attachment: scroll;
+    -webkit-background-size: cover;
+    background-size: cover;
+  }
+  #section1 {
+    .info {
+      p {
+        font-size: 16px;
+        &:nth-child(1) {
+          font-size: 28px;
+        }
+      }
+    }
+  }
+  #section2 {
+    .main {
+      p {
+        width: 80%;
+        margin: 0 auto;
+        text-indent: 25px;
+        letter-spacing: 2px;
+        line-height: 1.5;
+      }
     }
   }
 }

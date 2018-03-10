@@ -19,11 +19,12 @@ const bg = [bg1, bg2, bg3, bg4, bg5];
 
 /**
  * 模块入口
+ * 
  */
 class App extends Component {
   state = {
-    navShow: false,
-    currentId: 0,
+    navShow: false, // 导航显示状态
+    currentId: 0, // 视窗当前显示部分，与nav.id比较来控制导航高亮显示。
     nav: [
       { id: 2, title: '关于我', left: 0, link: '#section2' },
       { id: 3, title: '求职意向', left: 0, link: '#section3' },
@@ -33,10 +34,10 @@ class App extends Component {
       { id: 7, title: '联系我', left: 0, link: '#section7' }
     ],
   }
-
+  // 监听滚动条控制导航的显示状态
   scrollHandle = () => {
-    let scrollBar = document.documentElement.scrollTop;
-    let clientHeight = document.documentElement.clientHeight;
+    let scrollBar = document.documentElement.scrollTop || document.body.scrollTop;
+    let clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
     let currentId = Math.round(scrollBar / clientHeight + 1);
     this.setState({ currentId: currentId })
     if (scrollBar >= clientHeight) {
@@ -78,13 +79,13 @@ class App extends Component {
  */
 class Nav extends Component {
   state = {
-    dropdownShow: false,
+    dropdownHeight: false,
   }
   dropdownToggle = () => {
-    this.setState({ dropdownShow: !this.state.dropdownShow })
+    this.setState({ dropdownHeight: !this.state.dropdownHeight })
   }
   render () {
-    let { currentId, nav, navShow } = this.props.data;
+    let { currentId, nav } = this.props.data;
     return (
       <div className='nav' >
         <div className="content">
@@ -99,17 +100,13 @@ class Nav extends Component {
               })
             }
           </section>
-          <section className='more' onClick={this.dropdownToggle} >
+          <section className='more' onClick={this.dropdownToggle}>
             <Icon type="bars" style={{ fontSize: 20, color: '#fff' }} />
           </section>
         </div>
-        <ReactCSSTransitionGroup
-          transitionName="navtoggle"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}>
-          {this.state.dropdownShow &&
-            <div className='dropdown' >
               {
+          <div className='dropdown' style={{ height: this.state.dropdownHeight ? 70 + 'px' : 0 }} >
+            {
                 nav.map(item => {
                   let { id, title, link } = item
                   return <a href={link} className={currentId === id ? 'active' : ''} key={id} >{title}</a>
@@ -117,12 +114,10 @@ class Nav extends Component {
               }
             </div>
           }
-        </ReactCSSTransitionGroup>
       </div>
     )
   }
 }
-
 
 /**
  * 轮播部分
@@ -143,12 +138,12 @@ class Section1 extends Component {
             })
           }
         </Carousel>
-        <div className='hellow' >
+        <div className='info'>
           <p>Hellow,I'm liuzuan</p>
           <p>一枚热爱coding的前端工程师</p>
           <div className='button' >
-            <span>About Me</span>
-            <span>My GitHub</span>
+            <a href="#section2">About Me</a>
+            <a href="http://github.com/liuzuan" target='blank'>My GitHub</a>
           </div>
         </div>
       </div>
@@ -163,7 +158,7 @@ class Section2 extends Component {
   state = {}
   render () {
     return (
-      <div id='section2'>
+      <div id='section2' className='panel'>
         <div className='main' >
           <h1>关于我</h1>
           <div className='avatar' >
@@ -184,18 +179,10 @@ class Section3 extends Component {
 
   render () {
     return (
-      <div id='section3' className='backgroundPanel' >
+      <div id='section3' className='backgroundPanel panel'>
+        <div className='main'>
         <h1>求职意向</h1>
-        <div className='container' >
-          <section className='panel' >
-
-          </section>
-          <section className='panel' >
-
-          </section>
-          <section className='panel' >
-
-          </section>
+          <div className='container' ></div>
         </div>
       </div>
     )
@@ -208,7 +195,7 @@ class Section3 extends Component {
 class Section4 extends Component {
   state = {
     artList: [
-      { title: 'CNode社区', text: 'react全家桶实现移动端CNode社区', img: art1, link: 'https://liuzuan.github.io/react-cnode/' },
+      { title: 'CNode社区', text: 'react全家桶实现移动端CNode社区', img: art1, link: 'http://liuzuann.com/react-cnode/' },
       { title: '商城购物车', text: '原生js实现购物车功能', img: art2, link: '' },
       { title: '知乎日报', text: '', img: art3, link: '' },
       { title: 'Yummy', text: '', img: art4, link: '' },
@@ -218,7 +205,8 @@ class Section4 extends Component {
   }
   render () {
     return (
-      <div id='section4'>
+      <div id='section4' className='panel'>
+        <div className='main'>
         <h1>项目作品</h1>
         <section className='container' >
           {
@@ -227,13 +215,18 @@ class Section4 extends Component {
               return <div className='artBox' key={index} >
                 <img src={img} alt="" />
                 <a href={link} target='blank' className='coverBox'>
+                    <div className='coverContent'>
+                      <section>
                   <p className='title' >{title}</p>
                   <p className='text' >{text}</p>
+                      </section>
+                    </div>
                 </a>
               </div>
             })
           }
         </section>
+      </div>
       </div>
     )
   }
@@ -243,11 +236,12 @@ class Section4 extends Component {
  * 技术掌握
  */
 class Section5 extends Component {
-
   render () {
     return (
-      <div id="section5" className='backgroundPanel'>
+      <div id="section5" className='backgroundPanel panel'>
+        <div className='main'>
         <h1>技术掌握</h1>
+      </div>
       </div>
     )
   }
@@ -257,11 +251,12 @@ class Section5 extends Component {
  * 我的经历
  */
 class Section6 extends Component {
-
   render () {
     return (
-      <div id="section6">
+      <div id="section6" className='panel'>
+        <div className='main'>
         <h1>我的经历</h1>
+      </div>
       </div>
     )
   }
@@ -271,16 +266,16 @@ class Section6 extends Component {
  * 联系我
  */
 class Section7 extends Component {
-
   render () {
     return (
-      <div id="section7" className='backgroundPanel'>
+      <div id="section7" className='backgroundPanel panel'>
+        <div className='main'>
         <h1>联系我</h1>
+      </div>
       </div>
     )
   }
 }
-
 
 
 export default App;
