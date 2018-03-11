@@ -34,16 +34,41 @@ class App extends Component {
       { id: 7, title: '联系我', left: 0, link: '#section7' }
     ],
   }
-  // 监听滚动条控制导航的显示状态
+  // 监听滚动条
   scrollHandle = () => {
+    // 控制导航条的显示与隐藏
     let scrollBar = document.documentElement.scrollTop || document.body.scrollTop;
     let clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
-    let currentId = Math.round(scrollBar / clientHeight + 1);
+    let currentId = Math.round(scrollBar / clientHeight + 0.9);
     this.setState({ currentId: currentId })
     if (scrollBar >= clientHeight) {
       this.setState({ navShow: true })
     } else {
       this.setState({ navShow: false })
+    }
+
+    // 元素进入视窗添加淡入过渡效果
+    let panel = document.getElementsByClassName('panel');
+    for (let i of panel) {
+      let offsetDom = i.offsetTop;
+      let offsetWin = offsetDom - scrollBar;
+      if (offsetWin <= (clientHeight * 0.1) && offsetWin > -clientHeight * 0.9) {
+        let h1 = i.getElementsByTagName('h1')[0];
+        let main = i.getElementsByClassName('main')[0];
+        h1.className = 'newh1';
+        main.classList.add('fadeIn');
+      }
+    }
+
+    // 背景图片随滚动实现少量偏移效果
+    let backgroundPanel = document.getElementsByClassName('backgroundPanel');
+    for (let i of backgroundPanel) {
+      let panel_scroll = document.documentElement.scrollTop || document.body.scrollTop;
+      let panel_dom = i.offsetTop;
+      let panel_win = panel_dom - panel_scroll;
+      if (-i.offsetHeight < panel_win && panel_win < clientHeight) {
+        i.style.backgroundPositionY = (50 / clientHeight) * panel_win + 'px';
+      }
     }
   }
 
@@ -90,7 +115,7 @@ class Nav extends Component {
       <div className='nav' >
         <div className="content">
           <section className='left'>
-            liuzuan's blogs
+            LZA
           </section>
           <section className='right'>
             {
@@ -104,16 +129,16 @@ class Nav extends Component {
             <Icon type="bars" style={{ fontSize: 20, color: '#fff' }} />
           </section>
         </div>
-              {
+        {
           <div className='dropdown' style={{ height: this.state.dropdownHeight ? 70 + 'px' : 0 }} >
             {
-                nav.map(item => {
-                  let { id, title, link } = item
-                  return <a href={link} className={currentId === id ? 'active' : ''} key={id} >{title}</a>
-                })
-              }
-            </div>
-          }
+              nav.map(item => {
+                let { id, title, link } = item
+                return <a href={link} className={currentId === id ? 'active' : ''} key={id} >{title}</a>
+              })
+            }
+          </div>
+        }
       </div>
     )
   }
@@ -139,8 +164,8 @@ class Section1 extends Component {
           }
         </Carousel>
         <div className='info'>
-          <p>Hellow,I'm liuzuan</p>
-          <p>一枚热爱coding的前端工程师</p>
+          <p className='p1' >hellow,i'm liuzuan</p>
+          <p className='p2' >一枚热爱coding的前端工程师</p>
           <div className='button' >
             <a href="#section2">About Me</a>
             <a href="http://github.com/liuzuan" target='blank'>My GitHub</a>
@@ -159,13 +184,15 @@ class Section2 extends Component {
   render () {
     return (
       <div id='section2' className='panel'>
-        <div className='main' >
+        <div className='content' >
           <h1>关于我</h1>
-          <div className='avatar' >
-            <img src={avatar} alt="" />
+          <div className='main'>
+            <div className='avatar' >
+              <img src={avatar} alt="" />
+            </div>
+            <p>刘祖安，23岁，坐标北京，前端工程师一枚，热爱写代码。重度互联网用户，喜欢逛论坛。<br /></p>
+            <p>无聊时喜欢各种瞎捣鼓，学习路漫漫，志同道合的朋友可以加我，一起成长。我的QQ：467209099，我的微信：lza1-1。</p>
           </div>
-          <p>刘祖安，23岁，坐标北京，前端工程师一枚，热爱写代码。重度互联网用户，喜欢逛论坛。<br /></p>
-          <p>无聊时喜欢各种瞎捣鼓，学习路漫漫，志同道合的朋友可以加我，一起成长。我的QQ：467209099，我的微信：lza1-1。</p>
         </div>
       </div>
     )
@@ -180,9 +207,9 @@ class Section3 extends Component {
   render () {
     return (
       <div id='section3' className='backgroundPanel panel'>
-        <div className='main'>
-        <h1>求职意向</h1>
-          <div className='container' ></div>
+        <div className='content'>
+          <h1>求职意向</h1>
+          <div className='main'></div>
         </div>
       </div>
     )
@@ -206,27 +233,27 @@ class Section4 extends Component {
   render () {
     return (
       <div id='section4' className='panel'>
-        <div className='main'>
-        <h1>项目作品</h1>
-        <section className='container' >
-          {
-            this.state.artList.map((item, index) => {
-              let { title, img, text, link } = item;
-              return <div className='artBox' key={index} >
-                <img src={img} alt="" />
-                <a href={link} target='blank' className='coverBox'>
+        <div className='content'>
+          <h1>项目作品</h1>
+          <section className='main' >
+            {
+              this.state.artList.map((item, index) => {
+                let { title, img, text, link } = item;
+                return <div className='artBox' key={index} >
+                  <img src={img} alt="" />
+                  <a href={link} target='blank' className='coverBox'>
                     <div className='coverContent'>
                       <section>
-                  <p className='title' >{title}</p>
-                  <p className='text' >{text}</p>
+                        <p className='title' >{title}</p>
+                        <p className='text' >{text}</p>
                       </section>
                     </div>
-                </a>
-              </div>
-            })
-          }
-        </section>
-      </div>
+                  </a>
+                </div>
+              })
+            }
+          </section>
+        </div>
       </div>
     )
   }
@@ -239,9 +266,10 @@ class Section5 extends Component {
   render () {
     return (
       <div id="section5" className='backgroundPanel panel'>
-        <div className='main'>
-        <h1>技术掌握</h1>
-      </div>
+        <div className='content'>
+          <h1>技术掌握</h1>
+          <div className="main"></div>
+        </div>
       </div>
     )
   }
@@ -254,9 +282,11 @@ class Section6 extends Component {
   render () {
     return (
       <div id="section6" className='panel'>
-        <div className='main'>
-        <h1>我的经历</h1>
-      </div>
+        <div className='content'>
+          <h1>我的经历</h1>
+          <div className="main"></div>
+
+        </div>
       </div>
     )
   }
@@ -269,9 +299,11 @@ class Section7 extends Component {
   render () {
     return (
       <div id="section7" className='backgroundPanel panel'>
-        <div className='main'>
-        <h1>联系我</h1>
-      </div>
+        <div className='content'>
+          <h1>联系我</h1>
+          <div className="main"></div>
+
+        </div>
       </div>
     )
   }

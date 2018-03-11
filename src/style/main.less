@@ -1,3 +1,18 @@
+@font-face {
+  font-family: 'font1';
+  src: url('../assets/fonts/20db.otf');
+}
+
+@font-face {
+  font-family: 'font3';
+  src: url('../assets/fonts/Raleway-MediumItalic.ttf');
+}
+
+@font-face {
+  font-family: 'font4';
+  src: url('../assets/fonts/Dafodyl Demo.ttf');
+}
+
 .nav {
   position: fixed;
   top: 0;
@@ -11,11 +26,15 @@
     width: 90%;
     margin: 0 auto;
     color: #fff;
-    height: 70px;
-    line-height: 70px;
+    height: 50px;
+    line-height: 50px;
     font-size: 16px;
     display: flex;
     justify-content: space-between;
+    .left {
+      font-family: 'font1';
+      font-size: 25px;
+    }
     .right {
       a {
         color: #fff;
@@ -103,28 +122,59 @@
       font-size: 1rem;
       color: #000;
       text-shadow: 1px 1px 1px #fff;
-      font-weight: 600;
       letter-spacing: 3px;
+      font-weight: 700;
+      animation: infoP 2s;
+      font-family: 'font3';
       &:nth-child(1) {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
+        font-family: 'font4';
+        font-size: 3.8rem;
+      }
+    }
+    @keyframes infoP {
+      0% {
+        opacity: 0;
+        transform: matrix(.01, 0, 0, 1, 0, -100);
+      }
+      75% {
+        opacity: .75;
+        transform: matrix(1.2, 0, 0, 1, 0, -10);
+      }
+      100% {
+        opacity: 1;
+        transform: matrix(1, 0, 0, 1, 0, 0);
+      }
+    }
+    @keyframes infoB {
+      0% {
+        opacity: 0;
+        transform: matrix(.1, 0, 0, 1, 0, 100);
+      }
+      75% {
+        opacity: .75;
+        transform: matrix(1.2, 0, 0, 1, 0, 10);
+      }
+      100% {
+        opacity: 1;
+        transform: matrix(1, 0, 0, 1, 0, 0);
       }
     }
     .button {
       width: 415px;
       margin: 20px auto;
+      animation: infoB 2s;
       a {
         display: inline-block;
         width: 200px;
         height: 50px;
-        line-height: 50px;
-        background: rgba(0, 0, 0, .8);
         color: #fff;
-        border: 1px solid #fff;
+        font-family: 'font1';
+        font-size: 16px;
+        line-height: 50px;
         border-radius: 5px;
         text-align: center;
-        font-size: 16px;
-        transition: all .3s;
+        border: 1px solid #fff;
+        background: rgba(0, 0, 0, .8);
         &:nth-child(2) {
           color: #000;
           margin-left: 15px;
@@ -151,11 +201,12 @@
   align-items: center;
   width: 100%;
   height: 100vh;
-  .main {
+  .content {
     width: 100%;
     h1 {
       position: relative;
       font-size: 30px;
+      font-family: 'font3';
       font-weight: 600;
       color: #000;
       text-align: center;
@@ -170,24 +221,33 @@
         height: 3px;
         width: 0px;
         background: orange;
-        transition: width .2s;
       }
     }
-  }
-  &:hover .main h1:after {
-    width: 120px;
+    .newh1 {
+      &:after {
+        width: 120px;
+        transition: width 1s;
+      }
+    }
+    .main {
+      transform: translateY(150px);
+      opacity: 0;
+    }
+    .fadeIn {
+      transform: translateY(0);
+      opacity: 1;
+      transition: all .5s .3s;
+    }
   }
 }
 
 .backgroundPanel {
   background-position: 50% 0;
   background-attachment: fixed;
-  -webkit-background-size: cover;
   background-size: cover;
 }
 
 #section2 {
-  position: relative;
   h1 {
     font-size: 30px;
     font-weight: 600;
@@ -227,7 +287,7 @@
 
 #section4 {
   min-height: 100vh;
-  .container {
+  .main {
     width: 70%;
     margin: 0 auto;
     margin-top: 30px;
@@ -296,12 +356,25 @@
 }
 
 @media screen and(max-width: 768px) {
+  .nav {
+    .content {
+      .right {
+        display: none;
+      }
+      .more {
+        display: block;
+      }
+    }
+    .dropdown {
+      display: block;
+    }
+  }
   #section1 {
     .info {
       p {
-        font-size: 20px;
+        font-size: 30px;
         &:nth-child(1) {
-          font-size: 36px;
+          font-size: 5rem;
         }
       }
       .button {
@@ -318,50 +391,33 @@
       }
     }
   }
-  .nav {
-    .content {
-      .right {
-        display: none;
-      }
-      .more {
-        display: block;
-      }
-    }
-    .dropdown {
-      display: block;
-    }
-  }
   #section4 {
-    .container {
+    .content {
       width: 100%;
       padding: 0 15px;
-      .artBox {
-        width: 50%;
-        height: 50%;
-        padding: 10px;
-        .coverBox {
-          box-sizing: border-box;
-          font-size: 16px;
-          opacity: 1;
-          .coverContent {
-            section {
-              width: 100%;
-              padding: 10px;
-              .title {
-                font-size: 16px;
-              }
-              .text {
-                font-size: 12px;
+      .main {
+        width: 100%;
+        .artBox {
+          width: 50%;
+          height: 50%;
+          padding: 10px;
+          .coverBox {
+            box-sizing: border-box;
+            font-size: 16px;
+            opacity: 1;
+            .coverContent {
+              section {
+                width: 100%;
+                padding: 10px;
+                .title {
+                  font-size: 16px;
+                }
+                .text {
+                  font-size: 12px;
+                }
               }
             }
           }
-        }
-        &:hover .coverBox {
-          padding: 10px;
-          opacity: 1;
-        }
-        &:hover {
-          padding: 10px;
         }
       }
     }
@@ -372,15 +428,15 @@
   .backgroundPanel {
     background-position: 50% 0;
     background-attachment: scroll;
-    -webkit-background-size: cover;
     background-size: cover;
   }
   #section1 {
     .info {
       p {
-        font-size: 16px;
+        margin-bottom: 10px;
+        font-size: 20px;
         &:nth-child(1) {
-          font-size: 28px;
+          font-size: 5.5rem;
         }
       }
     }
