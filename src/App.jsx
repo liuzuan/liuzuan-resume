@@ -26,19 +26,20 @@ class App extends Component {
     navShow: false, // 导航显示状态
     currentId: 0, // 视窗当前显示部分，与nav.id比较来控制导航高亮显示。
     nav: [
-      { id: 2, title: '关于我', left: 0, link: '#section2' },
-      { id: 3, title: '求职意向', left: 0, link: '#section3' },
-      { id: 4, title: '项目作品', left: 0, link: '#section4' },
-      { id: 5, title: '技术掌握', left: 0, link: '#section5' },
-      { id: 6, title: '我的经历', left: 0, link: '#section6' },
-      { id: 7, title: '联系我', left: 0, link: '#section7' }
+      { id: 2, title: '关于我', left: 0, link: 'section2' },
+      { id: 3, title: '求职意向', left: 0, link: 'section3' },
+      { id: 4, title: '项目作品', left: 0, link: 'section4' },
+      { id: 5, title: '技术掌握', left: 0, link: 'section5' },
+      { id: 6, title: '我的经历', left: 0, link: 'section6' },
+      { id: 7, title: '联系我', left: 0, link: 'section7' }
     ],
   }
   // 监听滚动条
   scrollHandle = () => {
-    // 控制导航条的显示与隐藏
     let scrollBar = document.documentElement.scrollTop || document.body.scrollTop;
     let clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+
+    // 控制导航条的显示与隐藏
     let currentId = Math.round(scrollBar / clientHeight + 0.9);
     this.setState({ currentId: currentId })
     if (scrollBar >= clientHeight) {
@@ -52,7 +53,7 @@ class App extends Component {
     for (let i of panel) {
       let offsetDom = i.offsetTop;
       let offsetWin = offsetDom - scrollBar;
-      if (offsetWin <= (clientHeight * 0.1) && offsetWin > -clientHeight * 0.9) {
+      if (offsetWin <= (clientHeight * 0.4) && offsetWin > -clientHeight * 0.6) {
         let h1 = i.getElementsByTagName('h1')[0];
         let main = i.getElementsByClassName('main')[0];
         h1.className = 'newh1';
@@ -71,7 +72,6 @@ class App extends Component {
       }
     }
   }
-
   componentDidMount () {
     window.onscroll = this.scrollHandle
   }
@@ -104,10 +104,28 @@ class App extends Component {
  */
 class Nav extends Component {
   state = {
-    dropdownHeight: false,
+    dropdownShow: false,
   }
+
+  // navClick = (to) => {
+  //   let curScrollBar = document.documentElement.scrollTop || document.body.scrollTop;
+  //   let nextOffsetDom = document.getElementById(to).offsetTop;
+  //   let distance = nextOffsetDom - curScrollBar;
+  //   let buchang = 40;
+  //   let time = 10;
+  //   if (distance > buchang) {
+  //     console.log(1)
+  //     setTimeout(() => {
+  //       window.scrollTo(0, curScrollBar + buchang);
+  //     }, time);
+  //     // this.navClick(to);
+  //   } else {
+  //     window.scrollTo(0, curScrollBar + distance);
+  //   }
+  // }
+
   dropdownToggle = () => {
-    this.setState({ dropdownHeight: !this.state.dropdownHeight })
+    this.setState({ dropdownShow: !this.state.dropdownShow })
   }
   render () {
     let { currentId, nav } = this.props.data;
@@ -121,20 +139,20 @@ class Nav extends Component {
             {
               nav.map(item => {
                 let { id, title, link } = item
-                return <a className={currentId === id ? 'active' : ''} href={link} key={id} >{title}</a>
+                return <a href={`#${link}`} className={currentId === id ? 'active navLink' : 'navLink'} key={id} >{title}</a>
               })
             }
           </section>
           <section className='more' onClick={this.dropdownToggle}>
-            <Icon type="bars" style={{ fontSize: 20, color: '#fff' }} />
+            <Icon type="bars" style={{ fontSize: 30, color: '#fff' }} />
           </section>
         </div>
         {
-          <div className='dropdown' style={{ height: this.state.dropdownHeight ? 70 + 'px' : 0 }} >
+          <div className='dropdown' style={{ height: this.state.dropdownShow ? 70 + 'px' : 0 }} >
             {
               nav.map(item => {
                 let { id, title, link } = item
-                return <a href={link} className={currentId === id ? 'active' : ''} key={id} >{title}</a>
+                return <a href={`#${link}`} className={currentId === id ? 'active navLink' : 'navLink'} key={id} >{title}</a>
               })
             }
           </div>
@@ -226,7 +244,7 @@ class Section4 extends Component {
       { title: '商城购物车', text: '原生js实现购物车功能', img: art2, link: '' },
       { title: '知乎日报', text: '', img: art3, link: '' },
       { title: 'Yummy', text: '', img: art4, link: '' },
-      { title: '', text: '', img: art5, link: '' },
+      { title: 'Note', text: '我的个人笔记', img: art5, link: 'http://liuzuann.com/note/' },
       { title: '', text: '', img: art6, link: '' },
     ],
   }
