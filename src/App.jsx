@@ -1,25 +1,13 @@
 import React, { Component } from 'react';
 import { Carousel, Icon } from 'antd';
 import './style/main.less';
-import bg1 from './assets/images/01.jpg';
-import bg2 from './assets/images/02.jpg';
-import bg3 from './assets/images/03.jpg';
-import bg4 from './assets/images/07.jpg';
-import bg5 from './assets/images/05.jpg';
-import avatar from './assets/images/avatar.PNG';
-import art1 from './assets/images/art01.jpg';
-import art2 from './assets/images/art02.jpg';
-import art3 from './assets/images/art03.jpg';
-import art4 from './assets/images/art04.jpg';
-import art5 from './assets/images/art05.jpg';
-import art6 from './assets/images/art06.jpg';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { bg1, bg2, bg3, bg4, bg5, avatar, art1, art2, art3, art4, art5, art6 } from './tool.js';
 
 const bg = [bg1, bg2, bg3, bg4, bg5];
 
 /**
  * 模块入口
- * 
  */
 class App extends Component {
   state = {
@@ -221,13 +209,21 @@ class Section2 extends Component {
  * 求职意向
  */
 class Section3 extends Component {
-
+  state = {
+    joblist: ['pc端', '移动Web', '微信小程序', 'SPA']
+  }
   render () {
     return (
       <div id='section3' className='backgroundPanel panel'>
         <div className='content'>
           <h1>求职意向</h1>
-          <div className='main'></div>
+          <div className='main'>
+            {
+              this.state.joblist.map((title,index) => {
+                return <div key={index} className='cell' >{title}</div>
+              })
+            }
+          </div>
         </div>
       </div>
     )
@@ -240,12 +236,12 @@ class Section3 extends Component {
 class Section4 extends Component {
   state = {
     artList: [
-      { title: 'CNode社区', text: 'react全家桶实现移动端CNode社区', img: art1, link: 'http://liuzuann.com/react-cnode/' },
-      { title: '商城购物车', text: '原生js实现购物车功能', img: art2, link: '' },
+      { title: 'CNode社区', text: 'react全家桶实现移动端CNode社区', img: art1, link: 'http://liuzuann.com/react-cnode' },
+      { title: '轮播插件', text: 'jQuery实现3D轮播插件', img: art2, link: 'http://liuzuann.com/jQuery-3D-slider' },
       { title: '知乎日报', text: '', img: art3, link: '' },
-      { title: 'Yummy', text: '', img: art4, link: '' },
-      { title: 'Note', text: '我的个人笔记', img: art5, link: 'http://liuzuann.com/note/' },
-      { title: '', text: '', img: art6, link: '' },
+      { title: '数据监测平台', text: '利用Ajax技术完成扫描二维码从而实现登录、注册', img: art4, link: 'http://admonitor.travel-x.cc' },
+      { title: 'Note', text: '我的个人笔记', img: art5, link: 'http://liuzuann.com/note' },
+      { title: 'Travel', text: '完成首页城市数据相关页面的数据展示', img: art6, link: 'http://datamine.travel-x.cc' },
     ],
   }
   render () {
@@ -286,7 +282,9 @@ class Section5 extends Component {
       <div id="section5" className='backgroundPanel panel'>
         <div className='content'>
           <h1>技术掌握</h1>
-          <div className="main"></div>
+          <div className="main">
+
+          </div>
         </div>
       </div>
     )
@@ -302,8 +300,16 @@ class Section6 extends Component {
       <div id="section6" className='panel'>
         <div className='content'>
           <h1>我的经历</h1>
-          <div className="main"></div>
-
+          <div className="main">
+            <section className='container' >
+              <p>
+                2016年8月始  &nbsp;&nbsp;<ins>北京融创普达传媒有限公司</ins>
+              </p>
+              <p>
+                2012年9月-2016年7月 &nbsp;&nbsp;<ins>浙江经济管理职工大学&nbsp;计算机系</ins>
+              </p>
+            </section>
+          </div>
         </div>
       </div>
     )
@@ -319,13 +325,15 @@ class Section7 extends Component {
       <div id="section7" className='backgroundPanel panel'>
         <div className='content'>
           <h1>联系我</h1>
-          <div className="main"></div>
-
+          <div className="main">
+            <a target="blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=C2difnF_amVLfWJ7JXp6JWhkZg">
+              <img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_01.png" alt='mail' />
+            </a>
+          </div>
         </div>
       </div>
     )
   }
 }
-
 
 export default App;
