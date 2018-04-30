@@ -386,10 +386,12 @@
     justify-content: center;
     .container {
       margin-top: 30px;
-      padding-left: 20px;
-      border-left: 2px solid orange;
-      p:nth-child(1) {
-        margin-bottom: 100px;
+      padding: 0 10px 0 30px;
+      li {
+        padding: 0 0 60px;
+        ins {
+          color: orange;
+        }
       }
     }
   }
@@ -400,6 +402,15 @@
   .content {
     width: 50%;
     margin: 0 auto;
+    .main {
+      display: flex;
+      justify-content: center;
+      img {
+        display: block;
+        width: 150px;
+        height: 40px;
+      }
+    }
   }
 }
 
