@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Carousel, Icon, Timeline } from "antd";
+import { Carousel, Icon, Timeline, Progress } from "antd";
 import "./style/main.less";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { bg1, bg2, bg3, bg4, bg5, avatar, art1, art2, art3, art4, art5, art6 } from "./tool.js";
@@ -51,7 +51,7 @@ class App extends Component {
       }
     }
 
-    // 背景图片随滚动实现少量偏移效果
+    // 背景图片随滚动偏移效果
     let backgroundPanel = document.getElementsByClassName("backgroundPanel");
     for (let i of backgroundPanel) {
       let panel_scroll =
@@ -63,11 +63,11 @@ class App extends Component {
       }
     }
   };
-  componentDidMount() {
+  componentDidMount () {
     window.onscroll = this.scrollHandle;
   }
 
-  render() {
+  render () {
     return (
       <div className="App">
         <ReactCSSTransitionGroup
@@ -117,7 +117,7 @@ class Nav extends Component {
   dropdownToggle = () => {
     this.setState({ dropdownShow: !this.state.dropdownShow });
   };
-  render() {
+  render () {
     let { currentId, nav } = this.props.data;
     return (
       <div className="nav">
@@ -169,7 +169,7 @@ class Nav extends Component {
  * 轮播部分
  */
 class Section1 extends Component {
-  render() {
+  render () {
     return (
       <div id="section1">
         <Carousel autoplay effect="fade">
@@ -202,7 +202,7 @@ class Section1 extends Component {
  */
 class Section2 extends Component {
   state = {};
-  render() {
+  render () {
     return (
       <div id="section2" className="panel">
         <div className="content">
@@ -231,7 +231,7 @@ class Section3 extends Component {
   state = {
     joblist: ["pc端", "移动Web", "微信小程序", "SPA"]
   };
-  render() {
+  render () {
     return (
       <div id="section3" className="backgroundPanel panel">
         <div className="content">
@@ -290,7 +290,7 @@ class Section4 extends Component {
       }
     ]
   };
-  render() {
+  render () {
     return (
       <div id="section4" className="panel">
         <div className="content">
@@ -323,12 +323,36 @@ class Section4 extends Component {
  * 技术掌握
  */
 class Section5 extends Component {
-  render() {
+  state = {
+    progress: [
+      { titile: 'HTML', percent: 90 },
+      { titile: 'CSS', percent: 90 },
+      { titile: 'javaScript', percent: 85 },
+      { titile: 'Nodejs', percent: 85 },
+      { titile: 'Vue、React', percent: 70 },
+      { titile: 'PHP', percent: 10 },
+      { titile: 'Nginx', percent: 10 },
+      { titile: 'Mysql', percent: 10 },
+    ]
+  }
+  render () {
     return (
       <div id="section5" className="backgroundPanel panel">
         <div className="content">
           <h1>技术掌握</h1>
-          <div className="main" />
+          <div className="main" >
+            <section className="container">
+              {
+                this.state.progress.map((item, index) => {
+                  // let { percent } = item
+                  return (
+                    // <Progress key={index} percent={percent} type="circle" />
+                    <div key={index}></div>
+                  )
+                })
+              }
+            </section>
+          </div>
         </div>
       </div>
     );
@@ -339,7 +363,7 @@ class Section5 extends Component {
  * 我的经历
  */
 class Section6 extends Component {
-  render() {
+  render () {
     return (
       <div id="section6" className="panel">
         <div className="content">
@@ -348,15 +372,15 @@ class Section6 extends Component {
             <section className="container">
               <Timeline>
                 <Timeline.Item color='orange' >
-                  2018年4月始 &nbsp;&nbsp;<ins>北京美丽屋资产管理有限公司</ins>
+                  2018.4始 &nbsp;&nbsp;<ins>北京美丽屋资产管理有限公司</ins>
                 </Timeline.Item>
                 <Timeline.Item color='orange' >
-                  2015-09-01 2016年8月-2018年2月 &nbsp;&nbsp;<ins>
+                  2016.8-2018.2 &nbsp;&nbsp;<ins>
                     北京融创普达传媒有限公司
                   </ins>
                 </Timeline.Item>
                 <Timeline.Item color='orange' >
-                  2012年9月-2016年7月 &nbsp;&nbsp;<ins>
+                  2012.9-2016.7 &nbsp;&nbsp;<ins>
                     浙江经济管理职工大学&nbsp;计算机系
                   </ins>
                 </Timeline.Item>
@@ -373,7 +397,7 @@ class Section6 extends Component {
  * 联系我
  */
 class Section7 extends Component {
-  render() {
+  render () {
     return (
       <div id="section7" className="backgroundPanel panel">
         <div className="content">
