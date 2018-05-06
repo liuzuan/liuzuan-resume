@@ -1,10 +1,24 @@
 import React, { Component } from "react";
-import { Carousel, Icon, Timeline, Progress } from "antd";
+import { Carousel, Icon, Timeline, Avatar } from "antd";
 import "./style/main.less";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import { bg1, bg2, bg3, bg4, bg5, avatar, art1, art2, art3, art4, art5, art6 } from "./tool.js";
-
+import {
+  bg1,
+  bg2,
+  bg3,
+  bg4,
+  bg5,
+  avatar,
+  art1,
+  art2,
+  art3,
+  art4,
+  art5,
+  art6
+} from "./tool.js";
+import axios from "axios";
 const bg = [bg1, bg2, bg3, bg4, bg5];
+
 
 /**
  * 模块入口
@@ -63,6 +77,7 @@ class App extends Component {
       }
     }
   };
+
   componentDidMount () {
     window.onscroll = this.scrollHandle;
   }
@@ -216,6 +231,15 @@ class Section2 extends Component {
             </p>
             <p>
               无聊时喜欢各种瞎捣鼓，学习路漫漫，志同道合的朋友可以加我，一起成长。我的QQ：467209099，我的微信：lza1-1。
+              <a
+                target="blank"
+                href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=C2difnF_amVLfWJ7JXp6JWhkZg"
+              >
+                <img
+                  src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_01.png"
+                  alt="mail"
+                />
+              </a>
             </p>
           </div>
         </div>
@@ -325,32 +349,30 @@ class Section4 extends Component {
 class Section5 extends Component {
   state = {
     progress: [
-      { titile: 'HTML', percent: 90 },
-      { titile: 'CSS', percent: 90 },
-      { titile: 'javaScript', percent: 85 },
-      { titile: 'Nodejs', percent: 85 },
-      { titile: 'Vue、React', percent: 70 },
-      { titile: 'PHP', percent: 10 },
-      { titile: 'Nginx', percent: 10 },
-      { titile: 'Mysql', percent: 10 },
+      { titile: "HTML", percent: 90 },
+      { titile: "CSS", percent: 90 },
+      { titile: "javaScript", percent: 85 },
+      { titile: "Nodejs", percent: 85 },
+      { titile: "Vue、React", percent: 70 },
+      { titile: "PHP", percent: 10 },
+      { titile: "Nginx", percent: 10 },
+      { titile: "Mysql", percent: 10 }
     ]
-  }
+  };
   render () {
     return (
       <div id="section5" className="backgroundPanel panel">
         <div className="content">
           <h1>技术掌握</h1>
-          <div className="main" >
+          <div className="main">
             <section className="container">
-              {
-                this.state.progress.map((item, index) => {
-                  // let { percent } = item
-                  return (
-                    // <Progress key={index} percent={percent} type="circle" />
-                    <div key={index}></div>
-                  )
-                })
-              }
+              {this.state.progress.map((item, index) => {
+                // let { percent } = item
+                return (
+                  // <Progress key={index} percent={percent} type="circle" />
+                  <div key={index} />
+                );
+              })}
             </section>
           </div>
         </div>
@@ -371,18 +393,14 @@ class Section6 extends Component {
           <div className="main">
             <section className="container">
               <Timeline>
-                <Timeline.Item color='orange' >
+                <Timeline.Item color="orange">
                   2018.4始 &nbsp;&nbsp;<ins>北京美丽屋资产管理有限公司</ins>
                 </Timeline.Item>
-                <Timeline.Item color='orange' >
-                  2016.8-2018.2 &nbsp;&nbsp;<ins>
-                    北京融创普达传媒有限公司
-                  </ins>
+                <Timeline.Item color="orange">
+                  2016.8-2018.2 &nbsp;&nbsp;<ins>北京融创普达传媒有限公司</ins>
                 </Timeline.Item>
-                <Timeline.Item color='orange' >
-                  2012.9-2016.7 &nbsp;&nbsp;<ins>
-                    浙江经济管理职工大学&nbsp;计算机系
-                  </ins>
+                <Timeline.Item color="orange">
+                  2012.9-2016.7 &nbsp;&nbsp;<ins>浙江经济管理职工大学/计算机系</ins>
                 </Timeline.Item>
               </Timeline>
             </section>
@@ -397,23 +415,84 @@ class Section6 extends Component {
  * 联系我
  */
 class Section7 extends Component {
+  state = {
+    data: [],
+  };
+  formatTime = () => {
+    let date = new Date();
+    let Y = date.getFullYear() + '-';
+    let M = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}-` : `${date.getMonth() + 1}-`;
+    let D = date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : `${date.getDate() + 1}`;
+    return Y + M + D
+  }
+  getdata = async () => {
+    let res = await axios.get("/resume/message/");
+    if (res && res.status === 200) {
+      this.setState({ data: res.data.data.reverse() });
+      console.log(res.data)
+    }
+  };
+  submit = async () => {
+    let params = {
+      username: this.refs.userName.value,
+      message: this.refs.message.value,
+      time: this.formatTime(),
+    }
+    if (params.username) {
+      let res = await axios.post("/resume/message/", params);
+      if (res && res.status === 200) {
+        this.getdata();
+      }
+      console.log(res)
+    }
+  }
+  componentDidMount () {
+    this.getdata();
+  }
   render () {
+    let { data } = this.state;
     return (
       <div id="section7" className="backgroundPanel panel">
         <div className="content">
-          <h1>联系我</h1>
+          <h1>给我留言</h1>
           <div className="main">
-            <a
-              target="blank"
-              href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=C2difnF_amVLfWJ7JXp6JWhkZg"
-            >
-              <img
-                src="http://rescdn.qqmail.com/zh_CN/htmledition/images/function/qm_open/ico_mailme_01.png"
-                alt="mail"
-              />
-            </a>
+            <section className='messageBox' >
+              <input ref='userName' className='userName' type="text" placeholder='姓名' />
+              <textarea ref='message' className='message' placeholder='留言板' ></textarea>
+              <button onClick={this.submit} >提交</button>
+            </section>
+            <section className='messageLists' >
+              {data && data.map((item, index) => {
+                return <Message key={item._id} data={item} id={data.length - index} />
+              })}
+            </section>
           </div>
         </div>
+      </div>
+    );
+  }
+}
+
+/**
+ * 留言展示
+ */
+class Message extends Component {
+  render () {
+    let { data, id } = this.props;
+    let { message, username, time } = data;
+    return (
+      <div className='messagePanel' >
+        {data._id &&
+          <section>
+            <div className="user">
+              <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+              <span>{username}</span>
+              <span className='floor' >{id}楼</span>
+              <span className='time' >{time}</span>
+            </div>
+            <div className="message">{message}</div>
+          </section>
+        }
       </div>
     );
   }
