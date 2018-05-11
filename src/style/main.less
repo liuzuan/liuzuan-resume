@@ -401,9 +401,15 @@
 
 #section7 {
   background-image: url('../assets/images/02.jpg');
+  .wrap7 {
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, .7);
+  }
   .content {
     width: 50%;
     margin: 0 auto;
+    padding: 10px 0;
     .main {
       display: block;
       .messageBox {
@@ -417,7 +423,7 @@
         textarea {
           resize: none;
           width: 100%;
-          height: 200px;
+          height: 100px;
         }
         button {
           float: right;
@@ -427,7 +433,16 @@
           color: #fff;
         }
       }
-      .messageLists {}
+      .messageLists {
+        // background: rgba(255,255,255,.5);
+      }
+      .page {
+        padding: 10px 0 0;
+        float: right;
+      }
+      .ant-pagination-item-link {
+        background: none;
+      }
     }
   }
 }
@@ -436,8 +451,12 @@
   border-bottom: 1px dashed black;
   section {
     padding: 10px;
+    overflow: hidden;
     .user {
+      .name{
+      }
       .floor {
+        padding-left: 10px;
         color: rgb(54, 141, 241);
       }
       .time {
@@ -445,7 +464,16 @@
       }
     }
     .message {
-      padding: 10px 5px;
+      padding: 10px 0 10px 30px;
+      // float: left;
+    }
+    .del_message {
+      float: right;
+      color: rgb(0, 174, 255);
+      cursor: pointer;
+      &:hover {
+        color: chocolate;
+      }
     }
   }
 }
@@ -534,9 +562,9 @@
     }
   }
   #section7 {
-    background: none;
     .content {
       width: 100%;
+      min-height: 100vh;
       .main {
         width: 100%;
         padding: 0 20px;

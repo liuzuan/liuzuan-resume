@@ -80,16 +80,17 @@ module.exports = function(proxy, allowedHost) {
       disableDotRule: true,
     },
     public: allowedHost,
-    proxy: {
-      '/resume/*': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-        secure: false,
-        pathRewrite: {
-          '^/resume': '/resume'
-        }
-      }
-    },
+    // proxy: {
+    //   '/resume/*': {
+    //     target: 'http://localhost:3000',
+    //     changeOrigin: true,
+    //     secure: false,
+    //     pathRewrite: {
+    //       '^/resume': '/resume'
+    //     }
+    //   }
+    // },
+    proxy,
     before(app) {
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());

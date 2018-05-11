@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Carousel, Icon, Timeline, Avatar } from "antd";
+import { Carousel, Icon, Timeline, Avatar, Pagination } from "antd";
 import "./style/main.less";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {
@@ -18,7 +18,6 @@ import {
 } from "./tool.js";
 import axios from "axios";
 const bg = [bg1, bg2, bg3, bg4, bg5];
-
 
 /**
  * 模块入口
@@ -78,11 +77,11 @@ class App extends Component {
     }
   };
 
-  componentDidMount () {
+  componentDidMount() {
     window.onscroll = this.scrollHandle;
   }
 
-  render () {
+  render() {
     return (
       <div className="App">
         <ReactCSSTransitionGroup
@@ -132,7 +131,7 @@ class Nav extends Component {
   dropdownToggle = () => {
     this.setState({ dropdownShow: !this.state.dropdownShow });
   };
-  render () {
+  render() {
     let { currentId, nav } = this.props.data;
     return (
       <div className="nav">
@@ -184,7 +183,7 @@ class Nav extends Component {
  * 轮播部分
  */
 class Section1 extends Component {
-  render () {
+  render() {
     return (
       <div id="section1">
         <Carousel autoplay effect="fade">
@@ -217,7 +216,7 @@ class Section1 extends Component {
  */
 class Section2 extends Component {
   state = {};
-  render () {
+  render() {
     return (
       <div id="section2" className="panel">
         <div className="content">
@@ -255,7 +254,7 @@ class Section3 extends Component {
   state = {
     joblist: ["pc端", "移动Web", "微信小程序", "SPA"]
   };
-  render () {
+  render() {
     return (
       <div id="section3" className="backgroundPanel panel">
         <div className="content">
@@ -314,7 +313,7 @@ class Section4 extends Component {
       }
     ]
   };
-  render () {
+  render() {
     return (
       <div id="section4" className="panel">
         <div className="content">
@@ -359,7 +358,7 @@ class Section5 extends Component {
       { titile: "Mysql", percent: 10 }
     ]
   };
-  render () {
+  render() {
     return (
       <div id="section5" className="backgroundPanel panel">
         <div className="content">
@@ -385,7 +384,7 @@ class Section5 extends Component {
  * 我的经历
  */
 class Section6 extends Component {
-  render () {
+  render() {
     return (
       <div id="section6" className="panel">
         <div className="content">
@@ -400,7 +399,9 @@ class Section6 extends Component {
                   2016.8-2018.2 &nbsp;&nbsp;<ins>北京融创普达传媒有限公司</ins>
                 </Timeline.Item>
                 <Timeline.Item color="orange">
-                  2012.9-2016.7 &nbsp;&nbsp;<ins>浙江经济管理职工大学/计算机系</ins>
+                  2012.9-2016.7 &nbsp;&nbsp;<ins>
+                    浙江经济管理职工大学/计算机系
+                  </ins>
                 </Timeline.Item>
               </Timeline>
             </section>
@@ -417,59 +418,88 @@ class Section6 extends Component {
 class Section7 extends Component {
   state = {
     data: [],
+    curPage: 1,
+    pageSize: 2,
+    total: 0
   };
   formatTime = () => {
     let date = new Date();
-    let Y = date.getFullYear() + '-';
-    let M = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}-` : `${date.getMonth() + 1}-`;
-    let D = date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : `${date.getDate() + 1}`;
-    return Y + M + D
-  }
+    let Y = date.getFullYear() + "-";
+    let M =
+      date.getMonth() + 1 < 10
+        ? `0${date.getMonth() + 1}-`
+        : `${date.getMonth() + 1}-`;
+    let D =
+      date.getDate() + 1 < 10
+        ? `0${date.getDate() + 1}`
+        : `${date.getDate() + 1}`;
+    return Y + M + D;
+  };
   getdata = async () => {
-    let res = await axios.get("/resume/message/");
+    let res = await axios.get("http://localhost:3000/resume/message");
     if (res && res.status === 200) {
-      this.setState({ data: res.data.data.reverse() });
-      console.log(res.data)
+      this.setState({
+        data: res.data.data.reverse(),
+        total: res.data.statistic.count
+      });
+      console.log(res.data);
     }
   };
   submit = async () => {
     let params = {
       username: this.refs.userName.value,
       message: this.refs.message.value,
-      time: this.formatTime(),
-    }
+      time: this.formatTime()
+    };
     if (params.username) {
-      let res = await axios.post("/resume/message/", params);
+      let res = await axios.post(
+        "http://localhost:3000/resume/message",
+        params
+      );
       if (res && res.status === 200) {
+        this.refs.userName.value = "";
+        this.refs.message.value = "";
         this.getdata();
       }
-      console.log(res)
+      console.log(res);
     }
-  }
-  componentDidMount () {
+  };
+  deleteHandle = async id => {
+    let res = await axios.delete(
+      `http://localhost:3000/resume/message?_id=${id}`
+    );
+    if (res && res.status === 200) {
+      this.getdata();
+    }
+  };
+  componentDidMount() {
     this.getdata();
+    this.state.data.length && console.log(this.state.total);
   }
-  render () {
+  render() {
     let { data } = this.state;
-    return (
-      <div id="section7" className="backgroundPanel panel">
-        <div className="content">
-          <h1>给我留言</h1>
-          <div className="main">
-            <section className='messageBox' >
-              <input ref='userName' className='userName' type="text" placeholder='姓名' />
-              <textarea ref='message' className='message' placeholder='留言板' ></textarea>
-              <button onClick={this.submit} >提交</button>
-            </section>
-            <section className='messageLists' >
-              {data && data.map((item, index) => {
-                return <Message key={item._id} data={item} id={data.length - index} />
-              })}
-            </section>
+    return <div id="section7" className="backgroundPanel">
+        <div className="wrap7  panel">
+          <div className="content">
+            <h1>给我留言</h1>
+            <div className="main">
+              <section className="messageBox">
+                <input ref="userName" className="userName" type="text" placeholder="姓名" />
+                <textarea ref="message" className="message" placeholder="留言板" />
+                <button onClick={this.submit}>提交</button>
+              </section>
+              <section className="messageLists">
+                {data && data.map((item, index) => {
+                    return <Message key={item._id} data={item} deleteHandle={this.deleteHandle} id={data.length - index} />;
+                  })}
+              </section>
+              <section className="page">
+                <Pagination simple onChange={this.getdata} defaultPageSize={this.state.pageSize} defaultCurrent={this.curPage} total={this.state.total} />
+              </section>
+            </div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
 }
 
@@ -477,22 +507,25 @@ class Section7 extends Component {
  * 留言展示
  */
 class Message extends Component {
-  render () {
-    let { data, id } = this.props;
-    let { message, username, time } = data;
+  render() {
+    let { data, id, deleteHandle } = this.props;
+    let { message, username, time, _id } = data;
     return (
-      <div className='messagePanel' >
-        {data._id &&
+      <div className="messagePanel">
+        {data._id && (
           <section>
             <div className="user">
               <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-              <span>{username}</span>
-              <span className='floor' >{id}楼</span>
-              <span className='time' >{time}</span>
+              <span className="name">{username}</span>
+              <span className="floor">-{id}楼-</span>
+              <span className="time">{time}</span>
             </div>
             <div className="message">{message}</div>
+            <span className="del_message" onClick={() => deleteHandle(_id)}>
+              删除
+            </span>
           </section>
-        }
+        )}
       </div>
     );
   }
