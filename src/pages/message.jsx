@@ -10,15 +10,8 @@ class Main extends Component {
     state = {
         data: [],
         curPage: 1,
-        pageSize: 4,
+        pageSize: 3,
         total: 0
-    };
-    formatTime = () => {
-        let date = new Date();
-        let Y = date.getFullYear() + "-";
-        let M = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}-` : `${date.getMonth() + 1}-`;
-        let D = date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : `${date.getDate() + 1}`;
-        return Y + M + D;
     };
 
     getdata = async page => {
@@ -39,7 +32,7 @@ class Main extends Component {
         let params = {
             username: this.refs.userName.value,
             message: this.refs.message.value,
-            time: this.formatTime()
+            time: new Date().getTime()
         };
         if (params.username) {
             let res = await axios.post("http://localhost:3000/resume/message", params);
@@ -76,7 +69,7 @@ class Main extends Component {
                             </section>
                             <section className="messageLists">
                                 {data &&
-                                    data.map((item, index) => (
+                                    data.reverse().map((item, index) => (
                                         <Message
                                             key={item._id}
                                             data={item}
@@ -106,6 +99,13 @@ class Main extends Component {
  * 留言展示
  */
 class Message extends Component {
+    formatTime = date => {
+        date = new Date(Number(date));
+        let Y = date.getFullYear() + "-";
+        let M = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}-` : `${date.getMonth() + 1}-`;
+        let D = date.getDate() + 1 < 10 ? `0${date.getDate() + 1}` : `${date.getDate() + 1}`;
+        return Y + M + D;
+    };
     render() {
         let { data, id, deleteHandle } = this.props;
         let { message, username, time, _id } = data;
@@ -117,7 +117,7 @@ class Message extends Component {
                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                             <span className="name">{username}</span>
                             <span className="floor">-{id}楼-</span>
-                            <span className="time">{time}</span>
+                            <span className="time">{this.formatTime(time)}</span>
                         </div>
                         <div className="message">{message}</div>
                         <span className="del_message" onClick={() => deleteHandle(_id)}>
