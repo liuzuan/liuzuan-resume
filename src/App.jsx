@@ -3,7 +3,7 @@ import { Carousel, Icon, Timeline } from "antd";
 import "./style/main.less";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { bg1, bg2, bg3, bg4, bg5, avatar, art1, art2, art3, art4, art5, art6 } from "./tool.js";
-import Section7 from "./pages/message";
+// import Section7 from "./pages/message";
 const bg = [bg1, bg2, bg3, bg4, bg5];
 
 /**
@@ -80,7 +80,7 @@ class App extends Component {
                 <Section4 />
                 <Section5 />
                 <Section6 />
-                <Section7 />
+                {/* <Section7 /> */}
             </div>
         );
     }

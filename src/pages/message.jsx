@@ -69,14 +69,16 @@ class Main extends Component {
                             </section>
                             <section className="messageLists">
                                 {data &&
-                                    data.reverse().map((item, index) => (
-                                        <Message
-                                            key={item._id}
-                                            data={item}
-                                            deleteHandle={this.deleteHandle}
-                                            id={data.length - index}
-                                        />
-                                    ))}
+                                    data
+                                        .reverse()
+                                        .map((item, index) => (
+                                            <Message
+                                                key={item._id}
+                                                data={item}
+                                                deleteHandle={this.deleteHandle}
+                                                id={data.length - index}
+                                            />
+                                        ))}
                             </section>
                             <section className="page">
                                 <Pagination
